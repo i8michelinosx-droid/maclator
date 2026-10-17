@@ -21,6 +21,8 @@ if [ "$(uname -m)" = arm64 ]; then
   clang -arch arm64 -fobjc-arc -O1 -DMCL_LOOPBACK -Wno-deprecated-declarations -Wl,-rpath,@executable_path -framework Foundation -framework Metal ../tests/guest/metaltri.m $OUT/libmclloop.dylib -o $OUT/metaltri_loop
   codesign -f -s - $OUT/libmclloop.dylib $OUT/metaltri_loop
 fi
-clang -arch arm64 -fobjc-arc -O1 -Wno-deprecated-declarations -Wno-gnu-folding-constant -framework Foundation -framework Metal ../tests/guest/metaltri.m -o $OUT/metaltri
-codesign -f -s - $OUT/metaltri
+if [ -f ../tests/guest/metaltri.m ]; then
+  clang -arch arm64 -fobjc-arc -O1 -Wno-deprecated-declarations -Wno-gnu-folding-constant -framework Foundation -framework Metal ../tests/guest/metaltri.m -o $OUT/metaltri
+  codesign -f -s - $OUT/metaltri
+fi
 echo built
